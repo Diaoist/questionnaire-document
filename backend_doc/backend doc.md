@@ -18,7 +18,7 @@
 ``` 
 create table tbl_user (
     userId bigint not null primary key auto_increment,
-    wxUserId varchar(16) default null,
+    wxUserId varchar(16) not null,
     name varchar(32) default null,
     layer char(1) not null,
     mobile char(11) default null,
@@ -33,6 +33,10 @@ create table tbl_user (
 | questionnaireId        |      bigint     |     N    |    问卷唯一标识，主键自增   |
 |   questionnaireTitle     | varchar(128) |     N    |    问卷标题   |
 |   questionnaireRemark     |  varchar(128)     |     Y    |    问卷备注|
+|   createOper     |  varchar(32)     |     N    |    发起者的ID,wxUserId|
+|   modifyOper     |  varchar(32)     |     N    |    修改者的ID,wxUserId|
+|   createTime     |  datetime     |     N    |    创建时间|
+|   modifyTime     |  datetime     |     N    |    修改时间|
 |   ext      |  varchar(8)  |     Y    |    保留字段   |
 
 ```
@@ -40,6 +44,10 @@ create table tbl_questionnaire (
     questionnaireId bigint not null primary key auto_increment,
     questionnaireTitle varchar(128) not null,
     questionnaireRemark varchar(128) default null,
+    createOper varchar(32) not null,
+    modifyOper varchar(32) not null,
+    createTime datetime not null,
+    modifyTime datetime not null,
     ext varchar(8) default null) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
@@ -50,8 +58,13 @@ create table tbl_questionnaire (
 | :--------- | :----------- | :--- ----| :------------ |
 | questionId |      bigint     |     N    |    问题唯一标识，主键自增   |
 | questionnaireId |      bigint     |     N    |    所属问卷   |
+| questionIndex |      int     |     N    |    问题索引   |
 |   questionDesc     | varchar(128) |     N    |    问题描述   |
 |   questionType     |  char(1)     |     N    |    问题类型<br/>1：单选<br/> 2：多选<br/>3：填空<br/>4：判断|
+|   createOper     |  varchar(32)     |     N    |    发起者的ID,wxUserId|
+|   modifyOper     |  varchar(32)     |     N    |    修改者的ID,wxUserId|
+|   createTime     |  datetime     |     N    |    创建时间|
+|   modifyTime     |  datetime     |     N    |    修改时间|
 |   ext      |  varchar(8)  |     Y    |    保留字段   |
 
 * SQL
@@ -59,8 +72,13 @@ create table tbl_questionnaire (
 create table tbl_question (
     questionId bigint not null primary key auto_increment,
     questionnaireId bigint not null,
+    questionIndex int not null,
     questionDesc varchar(128) not null,
     questionType char(1) not null,
+    createOper varchar(32) not null,
+    modifyOper varchar(32) not null,
+    createTime datetime not null,
+    modifyTime datetime not null,
     ext varchar(8) default null) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
@@ -72,7 +90,11 @@ create table tbl_question (
 | questionId |      bigint     |     N    |    问题唯一标识   |
 |   optIndex |   char(1)    |     N    |    选项索引<br/>选择题：A/B/C/D/E... <br/>填空题：空 <br/>判断题：1/2/3...   |
 |   optDesc  |   varchar(128)    |     N    |    答案描述 <br/>填空题：空|
-|   optScore |   char(1)    |     Y    |    是否正确答案 <br/>0：否  <br/>1：是 <br/>不关注是否正确时为空  <br/>非零：代表分值|
+|   optScore |   char(5)    |     Y    |    是否正确答案 <br/>0：否  <br/>1：是 <br/>不关注是否正确时为空  <br/>非零：代表分值|
+|   createOper     |  varchar(32)     |     N    |    发起者的ID,wxUserId|
+|   modifyOper     |  varchar(32)     |     N    |    修改者的ID,wxUserId|
+|   createTime     |  datetime     |     N    |    创建时间|
+|   modifyTime     |  datetime     |     N    |    修改时间|
 |   ext      |  varchar(8)  |     Y    |    保留字段   |
 
 ```
@@ -80,7 +102,11 @@ create table tbl_option (
     questionId bigint not null,
     optIndex char(1) not null,
     optDesc varchar(128) not null,
-    optScore char(1) default null,
+    optScore char(5) default null,
+    createOper varchar(32) not null,
+    modifyOper varchar(32) not null,
+    createTime datetime not null,
+    modifyTime datetime not null,
     ext varchar(8) default null) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
